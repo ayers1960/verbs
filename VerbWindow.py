@@ -38,9 +38,9 @@ class VerbWindow(tk.Tk):
             width=wordSize, 
             background="#D9D9D9",
             relief=tk.FLAT,
-            justify=tk.RIGHT,
+            justify=tk.CENTER,
         )
-        self.en.place(x=15, y=40, anchor=tk.W)
+        self.en.place(x=int(self.maxX*0.25), y=60, anchor=tk.CENTER)
 
         self.ptVar = tk.StringVar()
         self.pt = tk.Entry(
@@ -49,9 +49,10 @@ class VerbWindow(tk.Tk):
             font=('Ariel", 35'),  
             width=wordSize, 
             background="#D9D9D9",
+            justify=tk.CENTER,
             relief=tk.FLAT,
         )
-        self.pt.place(x=int(self.maxX*0.5 +15), y=40, anchor=tk.W)
+        self.pt.place(x=int(self.maxX*0.75), y=60, anchor=tk.CENTER)
 
         tk.Label(self, text="Eu ",  font=font,).place(x=x, y=int(maxY-maxY*0.75), anchor=tk.E)
         self.euVar = tk.StringVar()
@@ -79,8 +80,9 @@ class VerbWindow(tk.Tk):
         tk.Label(self, text="Eles ",font=font).place(x=x, y=int(maxY-maxY*0.25), anchor=tk.E)
         self.eles = tk.Entry(self, textvariable=self.elesVar, font=font,  width=wordSize, background='#A9A9A9')
         self.eles.place(x=x, y=int(maxY-maxY*0.25), anchor=tk.W)
-
-        self.setVerbs(0)
+        
+        if len(self.verbs):
+            self.setVerbs(0)
 
     def setVerbs(self,i):
         if i >= 0 and i < len(self.verbs):
@@ -96,5 +98,6 @@ class VerbWindow(tk.Tk):
 
 
 if __name__ == "__main__":
+    verbs = []
     vw = VerbWindow(verbs)
     vw.mainloop()
