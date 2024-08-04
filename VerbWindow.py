@@ -1,4 +1,5 @@
 import tkinter as tk
+import random
 
 
 class VerbWindow(tk.Tk):
@@ -9,51 +10,17 @@ class VerbWindow(tk.Tk):
         self.verbs = verbs
         self.maxX = 1024
         self.maxY = 700
+        self.buildBigVerbs()
+        self.buildButtons()
+        self.buildCongigations(font)
+        if len(self.verbs):
+            self.setVerbs(0)
+
+    def buildCongigations(self,font):
         maxX = self.maxX
         maxY = self.maxY
-        self.geometry(f"{self.maxX}x{self.maxY}")
-
-        self.prevButton = tk.Button(self, text="PREV",
-                                    font=('Ariel', 20),
-                                    command=lambda:self.setVerbs(self.v-1))
-        self.prevButton.place(x=int(self.maxX*0.25),y=int(self.maxY-35), anchor=tk.CENTER)
-
-        self.nextButton = tk.Button(self, text="NEXT", 
-                                    font=('Ariel', 20),
-                                    command=lambda:self.setVerbs(self.v+1))
-        self.nextButton.place(x=int(self.maxX*0.75),y=int(self.maxY-35), anchor=tk.CENTER)
-
-        self.quitButton = tk.Button( self, text='EXIT',
-                                    font=('Ariel', 20),
-                                    command=self.destroy)
-        self.quitButton.place(x=int(self.maxX/2), y=int(self.maxY-35), anchor=tk.CENTER)
-
-        wordSize=15
         x=100
-        self.enVar = tk.StringVar()
-        self.en = tk.Entry(
-            self, 
-            textvariable=self.enVar, 
-            font=('Ariel", 35'),  
-            width=wordSize, 
-            background="#D9D9D9",
-            relief=tk.FLAT,
-            justify=tk.CENTER,
-        )
-        self.en.place(x=int(self.maxX*0.25), y=60, anchor=tk.CENTER)
-
-        self.ptVar = tk.StringVar()
-        self.pt = tk.Entry(
-            self, 
-            textvariable=self.ptVar, 
-            font=('Ariel", 35'),  
-            width=wordSize, 
-            background="#D9D9D9",
-            justify=tk.CENTER,
-            relief=tk.FLAT,
-        )
-        self.pt.place(x=int(self.maxX*0.75), y=60, anchor=tk.CENTER)
-
+        wordSize=15
         tk.Label(self, text="Eu ",  font=font,).place(x=x, y=int(maxY-maxY*0.75), anchor=tk.E)
         self.euVar = tk.StringVar()
         self.eu = tk.Entry(self, textvariable=self.euVar, font=font,  width=wordSize, background='#A9A9A9')
@@ -81,8 +48,61 @@ class VerbWindow(tk.Tk):
         self.eles = tk.Entry(self, textvariable=self.elesVar, font=font,  width=wordSize, background='#A9A9A9')
         self.eles.place(x=x, y=int(maxY-maxY*0.25), anchor=tk.W)
         
-        if len(self.verbs):
-            self.setVerbs(0)
+
+    def buildBigVerbs(self):
+        wordSize=15
+        self.enVar = tk.StringVar()
+        self.en = tk.Entry(
+            self, 
+            textvariable=self.enVar, 
+            font=('Ariel", 35'),  
+            width=wordSize, 
+            background="#D9D9D9",
+            relief=tk.FLAT,
+            justify=tk.CENTER,
+        )
+        self.en.place(x=int(self.maxX*0.25), y=60, anchor=tk.CENTER)
+
+        self.ptVar = tk.StringVar()
+        self.pt = tk.Entry(
+            self, 
+            textvariable=self.ptVar, 
+            font=('Ariel", 35'),  
+            width=wordSize, 
+            background="#D9D9D9",
+            justify=tk.CENTER,
+            relief=tk.FLAT,
+        )
+        self.pt.place(x=int(self.maxX*0.75), y=60, anchor=tk.CENTER)
+
+    def buildButtons(self):
+        self.geometry(f"{self.maxX}x{self.maxY}")
+
+        self.prevButton = tk.Button(self, text="PREV",
+                                    font=('Ariel', 20),
+                                    command=lambda:self.setVerbs(self.v-1))
+        self.prevButton.place(x=int(self.maxX*0.25),y=int(self.maxY-35), anchor=tk.CENTER)
+
+        self.quitButton = tk.Button( 
+            self, 
+            text='RANDOM',
+            font=('Ariel', 20),
+            command=lambda:self.randomVerb(),
+        )
+        self.quitButton.place(x=int(self.maxX/2), y=int(self.maxY-35), anchor=tk.CENTER)
+
+        self.nextButton = tk.Button(self, text="NEXT", 
+                                    font=('Ariel', 20),
+                                    command=lambda:self.setVerbs(self.v+1))
+        self.nextButton.place(x=int(self.maxX*0.75),y=int(self.maxY-35), anchor=tk.CENTER)
+
+    def randomVerb(self):
+        if len(self.verbs) > 1:
+            while True:
+                newV = random.randint(0,len(self.verbs))
+                if newV != self.v:
+                    break
+            self.setVerbs(newV)
 
     def setVerbs(self,i):
         if i >= 0 and i < len(self.verbs):
@@ -94,7 +114,6 @@ class VerbWindow(tk.Tk):
             self.eleVar.set(self.verbs[i].present.ele)
             self.elesVar.set(self.verbs[i].present.eles)
             self.v = i
-            
 
 
 if __name__ == "__main__":
